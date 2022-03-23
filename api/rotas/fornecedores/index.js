@@ -1,8 +1,6 @@
 const roteador = require('express').Router()
 const TabelaFornecedor = require('./TabelaFornecedor')
 const Fornecedor = require('./Fornecedor')
-const { request } = require('express')
-const { response } = require('express')
 
 roteador.get("/", async (request, response) => {
     const resultados = await TabelaFornecedor.listar()
@@ -12,7 +10,7 @@ roteador.get("/", async (request, response) => {
     )
 })
 
-roteador.post("/", async (request, response) =>{
+roteador.post("/", async (request, response, proximo) =>{
     try{
         const dadosRecebidos = request.body
         const fornecedor = new Fornecedor(dadosRecebidos)
@@ -22,16 +20,11 @@ roteador.post("/", async (request, response) =>{
             JSON.stringify(fornecedor)
         )
     } catch (erro) {
-        response.status(400)
-        response.send(
-            JSON.stringify({
-                mensagem: erro.menssage
-            })
-        )
+        proximo(erro)
     }
 })
 
-roteador.get('/:idFornecedor', async (request, response) => {
+roteador.get('/:idFornecedor', async (request, response, proximo) => {
     try{
         const id = request.params.idFornecedor
         const fornecedor = new Fornecedor ({ id: id })
@@ -41,14 +34,11 @@ roteador.get('/:idFornecedor', async (request, response) => {
             JSON.stringify(fornecedor)
         )
     } catch (erro){
-        response.status(404)
-        response.send(
-            JSON.stringify({ mensagem: erro.message})
-        )
+        proximo(erro)
     }
 })
 
-roteador.put("/:idFornecedor", async (request, response) => {
+roteador.put("/:idFornecedor", async (request, response, proximo) => {
     try {
         const id = request.params.idFornecedor
         const dadosRecebidos = request.body
@@ -58,14 +48,11 @@ roteador.put("/:idFornecedor", async (request, response) => {
         response.status(204)
         response.end()
     }catch (erro){
-        response.status(400)
-        response.send(
-            JSON.stringify({ mensagem: erro.message})
-        )
+        proximo(erro)
     }
 })
 
-roteador.delete("/:idFornecedor", async (request, response) => {
+roteador.delete("/:idFornecedor", async (request, response, proximo) => {
     try{
         const id = request.params.idFornecedor
         const fornecedor = new Fornecedor ({ id: id })
@@ -74,12 +61,7 @@ roteador.delete("/:idFornecedor", async (request, response) => {
         response.status(200)
         response.end()
     }catch (erro){
-        response.status(404)
-        response.send(
-            JSON.stringify({ 
-                mensagem: erro.message
-            })
-        )
+        proximo(erro)
     }
 })
 
