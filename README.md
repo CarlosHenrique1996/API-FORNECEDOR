@@ -43,7 +43,7 @@ Exemplo do que retorna quando a operação é realizada com sucesso:
 ]
 ```
 
-
+---
 * Consulta na base um fornecedor especifico. Na URL precisa informar o parâmetro `idFornecedor` que deseja consultar.
 ```
 GET  /api/fornecedores/idFornecedor
@@ -59,7 +59,7 @@ Exemplo do que retorna quando a operação é realizada com sucesso:
 }
 ```
 
-
+---
 * Atualizar um determinado fornecedor já cadastrado. Na URL precisa informar o parâmetro `idFornecedor` que deseja atualizar.
 ```
 PUT  /api/fornecedores/idFornecedor
@@ -79,13 +79,13 @@ Observação: Caso não há necessidade de atualizar todos os campos, informar a
 }
 ```
 
-
+---
 * Deletar um determinado fornecedor já cadastrado. Na URL precisa informar o parâmetro `idFornecedor` que deseja deletar da base de dados.
 ```
 DELETE  /api/fornecedores/idFornecedor
 ```
 
-
+---
 ## Tecnologias utilizadas
 * Desenvolvido em JavaScript.
 * Banco MySQL
