@@ -1,21 +1,34 @@
 const roteador = require('express').Router()
 const TabelaFornecedor = require('./TabelaFornecedor')
 const Fornecedor = require('./Fornecedor')
+const { request } = require('express')
+const { response } = require('express')
 
 roteador.get("/", async (request, response) => {
     const resultados = await TabelaFornecedor.listar()
+    response.status(200)
     response.send(
         JSON.stringify(resultados)
     )
 })
 
 roteador.post("/", async (request, response) =>{
-    const dadosRecebidos = request.body
-    const fornecedor = new Fornecedor(dadosRecebidos)
-    await fornecedor.criar()
-    response.send(
-        JSON.stringify(fornecedor)
-    )
+    try{
+        const dadosRecebidos = request.body
+        const fornecedor = new Fornecedor(dadosRecebidos)
+        await fornecedor.criar()
+        response.status(201)
+        response.send(
+            JSON.stringify(fornecedor)
+        )
+    } catch (erro) {
+        response.status(400)
+        response.send(
+            JSON.stringify({
+                mensagem: erro.menssage
+            })
+        )
+    }
 })
 
 roteador.get('/:idFornecedor', async (request, response) => {
@@ -23,10 +36,12 @@ roteador.get('/:idFornecedor', async (request, response) => {
         const id = request.params.idFornecedor
         const fornecedor = new Fornecedor ({ id: id })
         await fornecedor.carregar()
+        response.status(200)
         response.send(
             JSON.stringify(fornecedor)
         )
     } catch (erro){
+        response.status(404)
         response.send(
             JSON.stringify({ mensagem: erro.message})
         )
@@ -40,14 +55,33 @@ roteador.put("/:idFornecedor", async (request, response) => {
         const dados = Object.assign({}, dadosRecebidos, { id: id })
         const fornecedor = new Fornecedor(dados)    
         await fornecedor.atualizar()
+        response.status(204)
         response.end()
     }catch (erro){
+        response.status(400)
         response.send(
-            {mensagem: erro.message}
+            JSON.stringify({ mensagem: erro.message})
         )
     }
 })
 
+roteador.delete("/:idFornecedor", async (request, response) => {
+    try{
+        const id = request.params.idFornecedor
+        const fornecedor = new Fornecedor ({ id: id })
+        await fornecedor.carregar()
+        await fornecedor.remover()
+        response.status(200)
+        response.end()
+    }catch (erro){
+        response.status(404)
+        response.send(
+            JSON.stringify({ 
+                mensagem: erro.message
+            })
+        )
+    }
+})
 
 
 module.exports = roteador
