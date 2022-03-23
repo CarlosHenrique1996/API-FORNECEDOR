@@ -22,6 +22,7 @@ Exemplo do que precisar inserir no body:
 }
 ```
 
+
 * Consulta na base todos os fornecedores cadastrados. Não precisa informar nenhum parâmetro na URL.
 ```
 GET  /api/fornecedores/
@@ -42,6 +43,7 @@ Exemplo do que retorna quando a operação é realizada com sucesso:
 ]
 ```
 
+
 * Consulta na base um fornecedor especifico. Na URL precisa informar o parâmetro `idFornecedor` que deseja consultar.
 ```
 GET  /api/fornecedores/idFornecedor
@@ -57,6 +59,7 @@ Exemplo do que retorna quando a operação é realizada com sucesso:
     "versao": 0
 }
 ```
+
 
 * Atualizar um determinado fornecedor já cadastrado. Na URL precisa informar o parâmetro `idFornecedor` que deseja atualizar.
 ```
@@ -77,11 +80,13 @@ Observação: Caso não há necessidade de atualizar todos os campos, informar a
 }
 ```
 
+
 * Deletar um determinado fornecedor já cadastrado. Na URL precisa informar o parâmetro `idFornecedor` que deseja deletar da base de dados.
 ```
 DELETE  /api/fornecedores/idFornecedor
 
 ```
+
 
 ## Tecnologias utilizadas
 * Desenvolvido em JavaScript.
