@@ -5,11 +5,30 @@ const config = require("config")
 const NaoEncontrado = require("./erros/NaoEncontrado")
 const CampoInvalido = require("./erros/CampoInvalido")
 const DadosNaoFornecidos = require("./erros/DadosNaoFornecidos")
-const ValorNaoSuportado = require("./erros/NaoEncontrado")
+const ValorNaoSuportado = require("./erros/ValorNaoSuportado")
+const formatosAceitos = require("./Serializador").formatosAceitos
 
 app.use(BodyParser.json())
 
+app.use((request, response, proximo) =>{
+    let formatoRequisitado = request.header("Accept")
+
+    if (formatoRequisitado === "*/*"){
+        formatoRequisitado = "application/json"
+    }
+
+    if (formatosAceitos.indexOf(formatoRequisitado) === -1){
+        response.status(406)
+        response.end()
+        return 
+    }
+
+    response.setHeader("Content-Tyoe", formatoRequisitado)
+    proximo()
+})
+
 const roteador = require("./rotas/fornecedores")
+const { response } = require('express')
 app.use("/api/fornecedores", roteador)
 
 app.use((erro, request, response, proximo) =>{    
